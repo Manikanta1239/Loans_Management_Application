@@ -126,6 +126,20 @@ app.delete('/api/loans/:id', async (req, res) => {
     }
 });
 
+// Get loan by ID
+app.get('/api/loans/:id', async (req, res) => {
+    try {
+        const loan = await Loan.findByPk(req.params.id);
+        if (!loan) {
+            return res.status(404).json({ error: 'Loan not found' });
+        }
+        res.json(loan);
+    } catch (err) {
+        console.error('Error fetching loan:', err);
+        res.status(500).json({ error: 'Error fetching loan details' });
+    }
+});
+
 // Check for upcoming repayments
 async function checkRepayments() {
     try {
